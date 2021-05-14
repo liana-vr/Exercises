@@ -41,3 +41,40 @@ public class Program {
 		return new int[0];
 	}
 }
+
+//////////////////////////////////////////////////////////////////
+// Given two non-empty arrays of integers, write a function that determines whether the 
+// second array is a subsequence of the first one.
+// A single number in an array and the array itself are both valid subsequences of the array.
+
+////////////////////////// SOLUTION 1 ////////////////////////////
+public class Program {
+	public static bool IsValidSubsequence(List<int> array, List<int> sequence) {
+		int seqIdx = 0;
+		int arrIdx = 0;
+		while (arrIdx < array.Count && seqIdx < sequence.Count) {
+			if (array[arrIdx] == sequence[seqIdx]) {
+				seqIdx++;
+			}
+			arrIdx++;
+		}
+		return seqIdx == sequence.Count;
+	}
+}
+
+////////////////////////// SOLUTION 2 ////////////////////////////
+
+public class Program {
+	public static bool IsValidSubsequence(List<int> array, List<int> sequence) {
+		int seqIdx = 0;
+		foreach (var val in array){
+			if (seqIdx == sequence.Count) {
+				break;
+			}
+			if (sequence[seqIdx] == val) {
+				seqIdx++;
+			}
+		}
+		return seqIdx == sequence.Count;
+	}
+}
