@@ -78,3 +78,114 @@ public class Program {
 		return seqIdx == sequence.Count;
 	}
 }
+
+//////////////////////////////////////////////////////////////////
+// Write a function that takes in a non-empty array of integers that are sorted
+// in ascending order and returns a new array of the same length with the square of the 
+// original ontegers also sorted in ascending order.
+
+////////////////////////// SOLUTION 1 ////////////////////////////
+
+public class Program {
+
+	public int[] SortedSquaredArray(int[] array) {
+		int[] squareArray = new int[array.Length];
+		for (int idx = 0; idx < array.Length; idx++){
+			int value = array[idx];
+			squareArray[idx] = value * value;
+		}
+		Array.Sort(squareArray);
+		return squareArray;
+	}
+}
+
+////////////////////////// SOLUTION 2 ////////////////////////////
+public class Program {
+
+	public int[] SortedSquaredArray(int[] array) {
+		int[] squareArray = new int[array.Length];
+		int smallerValueIdx = 0;
+		int largerValueIdx = array.Length -1;
+		for (int idx = array.Length -1; idx >= 0; idx--) {
+			int smallerValue = array[smallerValueIdx];
+			int largerValue = array[largerValueIdx];
+			if (Math.Abs(smallerValue) > Math.Abs(largerValue)) {
+				squareArray[idx] = smallerValue * smallerValue;
+				smallerValueIdx++;
+			} else {
+				squareArray[idx] = largerValue * largerValue;
+				largerValueIdx--;
+			}
+		}
+		return squareArray;
+	}
+}
+
+//////////////////////////////////////////////////////////////////
+// Find closest value in BST
+// You can assume there will only be one closest value 
+
+////////////////////////// SOLUTION 1 ////////////////////////////
+
+public class Program {
+	public static int FindClosestValueInBst(BST tree, int target) {
+		return FindClosestValueInBst(tree, target, tree.value);
+	}
+	
+	public static int FindClosestValueInBst(BST tree, int target, int closest){
+		if (Math.Abs(target - closest) > Math.Abs(target - tree.value)) {
+			closest = tree.value;
+		}
+		if (target < tree.value && tree.left != null) {
+			return FindClosestValueInBst(tree.left, target, closest);
+		} else if (target > tree.value && tree.right != null) {
+			return FindClosestValueInBst(tree.right, target, closest);
+		} else {
+			return closest;
+		}
+	}
+
+	public class BST {
+		public int value;
+		public BST left;
+		public BST right;
+
+		public BST(int value) {
+			this.value = value;
+		}
+	}
+}
+
+////////////////////////// SOLUTION 2 ////////////////////////////
+public class Program {
+	public static int FindClosestValueInBst(BST tree, int target) {
+		return FindClosestValueInBst(tree, target, tree.value);
+	}
+	
+	public static int FindClosestValueInBst(BST tree, int target, int closest) {
+		BST currentNode = tree;
+		while (currentNode != null){
+			if (Math.Abs(target - closest) > Math.Abs(target - currentNode.value)) {
+				closest = currentNode.value;
+			}
+			if (target < currentNode.value) {
+				currentNode = currentNode.left;
+			} else if (target > currentNode.value) {
+				currentNode = currentNode.right;
+			} else {
+				break;
+			}
+		}
+		return closest;
+	}
+
+	public class BST {
+		public int value;
+		public BST left;
+		public BST right;
+
+		public BST(int value) {
+			this.value = value;
+		}
+	}
+}
