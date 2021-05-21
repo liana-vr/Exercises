@@ -98,3 +98,131 @@ public class Program {
 		array[i] = temp;
 	}
 }
+
+//////////////////////////////////////////////////////////////////
+// MONOTONIC ARRAY
+// Write a function that returns a boolean representin whether the is 
+// monotoninc. Note that empty arrays and arrays of one element are monotonic
+
+////////////////////////// SOLUTION 1 ////////////////////////////
+public class Program {
+	// O(n) time | O(1) space
+	public static bool IsMonotonic(int[] array) {
+		if (array.Length <= 2) return true;
+		
+		var direction = array[1] - array[0];
+		for (int i = 2; i < array.Length; i++){
+			if (direction == 0){
+				direction = array[i] - array[i-1];
+				continue;
+			}
+			if (breaksDirection(direction, array[i - 1], array[i])){
+				return false;
+			}
+		}
+		return true;
+	}
+	public static bool breaksDirection(int direction, int previous, int current){
+		var difference = current - previous;
+		if(direction > 0) return difference < 0;
+		return difference > 0;
+	}
+}
+
+////////////////////////// SOLUTION 2 ////////////////////////////
+public class Program {
+	// O(n) time | O(1) space
+	public static bool IsMonotonic(int[] array) {
+		var isNonDecreasing = true;
+		var isNonIncreasing = true;
+		for (int i = 1; i < array.Length; i++){
+			if (array[i] < array[i-1]){
+				isNonDecreasing = false;
+			}
+			if (array[i] > array[i-1]){
+				isNonIncreasing = false;
+			}
+		}
+		return isNonDecreasing || isNonIncreasing;
+	}
+}
+
+//////////////////////////////////////////////////////////////////
+// SPIRAL TRAVERSE
+// Write a function that takes a two-dimentional array and returns a
+// one dimentional array of all the elements in spiral order.
+
+////////////////////////// SOLUTION 1 ////////////////////////////
+
+public class Program{
+	// O(n) time | O(n) space
+	public static List<int> SpiralTraverse(int[,] array) {
+		if (array.GetLength(0) == 0) return new List<int>();
+		
+		var result = new List<int>();
+		var startRow = 0;
+		var endRow = array.GetLength(0)-1;
+		var startCol = 0;
+		var endCol = array.GetLength(1)-1;
+		
+		while (startRow <= endRow && startCol <= endCol){
+			for (int col = startCol; col <= endCol; col++){
+				result.Add(array[startRow,col]);
+			}
+			for (int row = startRow + 1; row <= endRow; row++){
+				result.Add(array[row,endCol]);
+			}
+			for(int col = endCol -1; col >= startCol; col--){
+				if (startRow == endRow) break;
+				result.Add(array[endRow,col]);
+			}
+			for(int row = endRow -1; row > startRow; row--){
+				if (startCol == endCol) break;
+				result.Add(array[row,startCol]);
+			}
+			startRow++;
+			endRow--;
+			startCol++;
+			endCol--;
+		}
+		return result;
+	}
+}
+
+////////////////////////// SOLUTION 2 ////////////////////////////
+public class Program {
+	// O(n) time | O(n) space
+	public static List<int> SpiralTraverse(int[,] array) {
+		if (array.Length == 0) return new List<int>();
+		
+		var result = new List<int>();
+		spiralFill(array, 0, array.GetLength(0) - 1, 0, array.GetLength(1) - 1, result);
+		return result;
+	}
+	public static void spiralFill(
+		int[,] array,
+		int startRow,
+		int endRow,
+		int startCol,
+		int endCol,
+		List<int> result) {
+		if (startRow > endRow || startCol > endCol){
+			return;
+		}
+		for(int col = startCol; col <= endCol; col++){
+			result.Add(array[startRow,col]);
+		}
+		for(int row = startRow + 1; row <= endRow; row++){
+			result.Add(array[row,endCol]);
+		}
+		for (int col = endCol - 1; col >= startCol; col--){
+			if (startRow == endRow) break;
+			result.Add(array[endRow,col]);
+		}
+		for (int row = endRow - 1; row >= startRow + 1; row--){
+			if (startCol == endCol) break;
+			result.Add(array[row,startCol]);
+		}
+		spiralFill(array, startRow + 1, endRow - 1, startCol + 1, endCol -1, result);
+	}
+}
