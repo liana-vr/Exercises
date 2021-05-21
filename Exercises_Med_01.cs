@@ -226,3 +226,38 @@ public class Program {
 		spiralFill(array, startRow + 1, endRow - 1, startCol + 1, endCol -1, result);
 	}
 }
+
+//////////////////////////////////////////////////////////////////
+// LONGEST PEAK
+// Write a function that takes an array of integers and returns 
+// the length of the longest peak in the array
+
+////////////////////////// SOLUTION 1 ////////////////////////////
+public class Program {
+	// O(n) time | O(1) space
+	public static int LongestPeak(int[] array) {
+		int longestPeakLength = 0;
+		int i = 1;
+		while (i < array.Length -1){
+			bool isPeak = array[i - 1] < array[i] && array[i] > array[i+1];
+			if (!isPeak){
+				i++;
+				continue;
+			}
+			int leftIdx = i - 2;
+			while (leftIdx >= 0 && array[leftIdx] < array[leftIdx+1]){
+				leftIdx--;
+			}
+			int rightIdx = i + 2;
+			while (rightIdx < array.Length && array[rightIdx] < array[rightIdx-1]){
+				rightIdx++;
+			}
+			int currentPeakLength = rightIdx - leftIdx -1;
+			if (currentPeakLength > longestPeakLength){
+				longestPeakLength = currentPeakLength;
+			}
+			i = rightIdx;
+		}
+		return longestPeakLength;
+	}
+}
